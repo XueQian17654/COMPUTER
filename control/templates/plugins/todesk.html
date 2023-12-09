@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <title>Plugins - Todesk</title>
+    <script src="../static/jquery.js"></script>
+</head>
+<body style="height: 98%;">
+<img src="" alt="" id="img" style="height: 100%;" />
+<script>
+    window.setInterval(function () {
+        $.get("../plugins/todesk?q=r&com=" + '{{com}}',  function (data, status) {
+            document.getElementById('img').src = data
+        });
+    }, 900);
+</script>
+</body>
+</html>

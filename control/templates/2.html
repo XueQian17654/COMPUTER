@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+
+<head>
+    <meta charset="UTF-8">
+    <title>控制台</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="./static/jquery.js"></script>
+    <link rel="stylesheet" href="./static/local.css">
+</head>
+
+<body>
+    <div class="list">
+        <h1>设备列表</h1>
+        <div id="com"></div>
+    </div>
+    <div id="renwu_" style="display: none;width: calc(100vw - 300px);">
+        <svg onclick="smaller()" width="30" height="30" style="margin-top: 10px;cursor: pointer;" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4.5c0-.28.22-.5.5-.5h15a.5.5 0 010 1h-15a.5.5 0 01-.5-.5zm0 5c0-.28.22-.5.5-.5h15a.5.5 0 010 1h-15a.5.5 0 01-.5-.5zm.5 4.5a.5.5 0 000 1h15a.5.5 0 000-1h-15z"></path>
+        </svg>
+        <input type="text" name="name" id="computer" style="display: none;">
+        <h1 style="margin-top: 0;">发送任务</h1>
+        <h4>注：</h4>
+        <div style="margin-left: 20px;">
+            <p>
+                可导入模块参见：
+                <a target="_blank" style="color: #f60;" href="https://docs.python.org/zh-cn/3.7/library/index.html">Python 标准库</a>
+            </p>
+            <p>自动导入的模块：requests, psutil, socket, time, os</p>
+            <p>安装模块：_pip(res) --&gt; 导入模块：_import(res) --&gt; 已导入的模块：imports[res]</p>
+            <p>获取文件夹内文件列表：os.listdir(res)</p>
+            <p>获取电脑中的所有盘符：psutil.disk_partitions()</p>
+        </div>
+        <div style="margin-left: 20px;">
+            <div style="display: flex;align-items: baseline;flex-wrap: wrap;">
+                <select id="what" name="val" data-live-search="true" onchange="this.value">
+                    <option selected value="command">短代码</option>
+                    <option value="commands">长代码</option>
+                    <option value="sendfile">回文件</option>
+                    <option value="reboot">自重启</option>
+                    <option value="update">自更新</option>
+                </select>
+                <textarea id="command" name="val3" style="width: 340px;height: 100px;"></textarea>
+                <input id="val5" name="val5">
+                <button onclick="go()">提交</button>
+            </div>
+
+            <h1 style="text-indent: 0;">任务</h1>
+            <table id="renwu_t" width="90%" border="1" bordercolor="#FF6600"></table>
+            <h1 style="text-indent: 0;">结果</h1>
+            <table id="result_t" width="90%" border="1" bordercolor="#FF6600"></table>
+        </div>
+        <div style="height: 100px;"></div>
+    </div>
+    <script src="./static/update.js"></script>
+</body>
+
+</html>

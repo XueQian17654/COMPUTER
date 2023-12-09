@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{title['name']}}</title>
+    <script src="./static/jquery.js"></script>
+    <style>
+        .d {
+            float: left;
+            width: 140px;
+            margin: 0.5%;
+            border-radius: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: 0.2s;
+        }
+
+        .d:hover {
+            background-color: #d9eeff;
+        }
+
+        #menu {
+            width: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            display: none;
+            position: absolute;
+            transition: 0.2s;
+            background-color: #fffe;
+            box-shadow: 3px 3px 13px 0px #00000066;
+            border-radius: 7px;
+        }
+    </style>
+    <style>
+        input {
+            border: 1px solid #ccc;
+            padding: 7px 0px;
+            border-radius: 7px;
+            padding-left: 5px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+        }
+
+        input:focus {
+            border-color: #000;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px #00000013, 0 0 8px #00000099;
+            box-shadow: inset 0 1px 1px #00000013, 0 0 8px #00000099
+        }
+    </style>
+    <style>
+        button {
+            border: 3px solid #000;
+            text-align: center;
+            font-size: 18px;
+            color: #000;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #00000000;
+        }
+
+        button:hover {
+            border-color: #000;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px #00000013, 0 0 8px #00000099;
+            box-shadow: inset 0 1px 1px #00000013, 0 0 8px #00000099
+        }
+    </style>
+</head>
+
+<body id="container" style="user-select: none;">
+    <video id="sound" style="display: none;" controls="">
+        <source src="../static/music/Windows Foreground.wav" type="audio/wav">
+    </video>
+
+    <div id="all">
+        <p>
+            <a style="font-size: 1.5em;margin-block-start: 0.83em;margin-block-end: 0.83em;
+            margin-inline-start: 0px;margin-inline-end: 0px;
+            font-weight: bold;">{{title['name']}}</a>&nbsp;&nbsp;&nbsp;
+            <button>New</button>&nbsp;&nbsp;&nbsp;
+            <button>Rename</button>&nbsp;&nbsp;&nbsp;
+            <button>Delete</button>
+            <br />
+            <input id="in" style="font-size: 1.17em;margin-block-start: 1em;margin-block-end: 1em;
+            margin-inline-start: 0px;margin-inline-end: 0px;width: 70%;" value="{{title['lu']}}">
+            <button onclick="window.location.href = '../to?lu=' + $('#in').val();">&check;</button>
+        </p><br>
+
+        {% for ii in a %}
+        {% if ii['su'] in ['wjj', 'xtp', 'pan', 'jsg'] %}
+        <div style="background-color: #0000;" title="{{ii['name']}}{{ii['bz']}}" id="{{ii['name']}}" class="d"
+            align="center" ondblclick="hide();window.location.href = '../go?name=' + this.id;">
+            <div
+                style="width: 100px;height: 90px;display: flex;align-content: center;justify-content: center;flex-direction: column;align-items: center;">
+                <img id="{{ii['name']}}img" onload="load(this)"
+                    onerror="this.src='../static/png/meiyou.png'; this.onerror=null;"
+                    src="../static/png/{{ii['su']}}.png" style="height: 90px;pointer-events: none;">
+            </div>
+            <br>{% if ii['su'] == 'xtp' or ii['su'] == 'pan' %}本地磁盘 ({{ii['name']}}:){% else %}{{ii['name']}}{% endif
+            %}{{ii['bz']}}
+        </div>
+        <script>
+            document.getElementById("{{ii['name']}}").oncontextmenu = function (e) {
+                e.preventDefault();
+
+                var evt = window.event || arguments[0];
+                var menu = document.getElementById('menu');
+                var container = document.getElementById('container');
+                var rightedge = container.clientWidth - evt.clientX;
+                var bottomedge = container.clientHeight - evt.clientY;
+
+                if (rightedge < menu.offsetWidth) {
+                    menu.style.left = container.scrollLeft + evt.clientX - menu.offsetWidth + "px";
+                } else {
+                    menu.style.left = container.scrollLeft + evt.clientX + "px";
+                } if (bottomedge < menu.offsetHeight) {
+                    menu.style.top = container.scrollTop + evt.clientY - menu.offsetHeight + "px";
+                } else {
+                    menu.style.top = container.scrollTop + evt.clientY + "px";
+                }
+                $('#menu').html(`<a onclick='hide();window.location.href = "../go?name={{ii['name']}}";'>Open</a><hr/><a>Delete</a><br/><a>Rename</a>`)
+                $('#menu').show(200);
+            }
+        </script>
+        {% else %}
+        <div style="background-color: #0000;" title="{{ii['name']}}{{ii['bz']}}" id="{{ii['name']}}" class="d"
+            align="center" ondblclick="show(this)">
+            <div
+                style="width: 100px;height: 90px;display: flex;align-content: center;justify-content: center;flex-direction: column;align-items: center;">
+                <img id="{{ii['name']}}img" onload="load(this)"
+                    onerror="this.src='../static/png/meiyou.png'; this.onerror=null;"
+                    src="../static/png/{{ii['su']}}.png" style="height: 90px;pointer-events: none;">
+            </div>
+            <br>{{ii['name']}}{{ii['bz']}}
+        </div>
+        <script>
+            document.getElementById("{{ii['name']}}").oncontextmenu = function (e) {
+                e.preventDefault();
+
+                var evt = window.event || arguments[0];
+                var menu = document.getElementById('menu');
+                var container = document.getElementById('container');
+                var rightedge = container.clientWidth - evt.clientX;
+                var bottomedge = container.clientHeight - evt.clientY;
+
+                if (rightedge < menu.offsetWidth) {
+                    menu.style.left = container.scrollLeft + evt.clientX - menu.offsetWidth + "px";
+                } else {
+                    menu.style.left = container.scrollLeft + evt.clientX + "px";
+                } if (bottomedge < menu.offsetHeight) {
+                    menu.style.top = container.scrollTop + evt.clientY - menu.offsetHeight + "px";
+                } else {
+                    menu.style.top = container.scrollTop + evt.clientY + "px";
+                }
+                $('#menu').html("<a onclick='show(document.getElementById(\"{{ii['name']}}\"))'>Open</a><hr/><a>Delete</a><br/><a>Rename</a>")
+                $('#menu').show(200);
+            }
+        </script>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div id="other">
+        <h1>请稍等...</h1>
+    </div>
+
+    <script>
+        $('#other').hide()
+        jsg = "{{title['lu']}}".split('/')[0]
+
+        function hide() {
+            $('#all').hide()
+            $('#other').show(3000)
+        }
+
+        function show(s) {
+            var lu = ("{{title['lu']}}".substring(jsg.length + 1) + s.id).replaceAll('/', '\\')
+            var url = "http://192.168.3.10:1902/kuaisu?name=" + jsg + "&val=sendfile&val3=" + lu
+            window.open(url, "_blank", "scrollbars=yes,resizable=1,modal=false,alwaysRaised=yes")
+        }
+
+        function load(s) {
+            if ($('#' + s.id).width() > 101) {
+                s.style.height = '';
+                s.style.width = '100px';
+            }
+        }
+    </script>
+
+    <div id="menu" style="display: none;"></div>
+
+    <script>
+        window.onclick = function (e) {
+            //关闭右键菜单 
+            //用户触发click事件就可以关闭了 因为绑定在window上 按事件冒泡处理 不会影响菜单的功能
+            $('#menu').hide(200);
+        }
+    </script>
+</body>
+
+</html>
